@@ -24,14 +24,42 @@ const buttonVariants = cva(
             destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90", // Style for destructive actions (like delete)
             outline: "border border-input hover:bg-accent hover:text-accent-foreground",
             link: "underline-offset-4 hover:underline text-primary",
-        } 
-        
-
-
-
-    }
-
-
-
-
+            },        
+        },
+        defaultVariants: {
+            variant: "default",
+            size: "default",
+            },
+        }
 )
+
+
+// ButtonProps interface extends HTML button properties and adds variants for the button styling, along with an asChild prop for custom component rendering
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean // Optional prop to render the button as a child component instead of a button element
+}
+
+// Creating the Button component using React.forwardRef to allow passing refs to the button element
+const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
+    ({ className, variant, size, asChild = false, ...props }, ref) => {
+      // Choose which component to render, either the Slot or the default "button"
+      const Comp = asChild ? Slot : "button"
+      // Return the rendered button (or slot component) with computed class names based on variant and size
+    return (
+        <Comp
+          className={cn(buttonVariants({ variant, size, className }))} // Apply the computed styles using the cva utility
+          ref={ref} // Forward the ref
+          {...props} // Spread remaining props (like onClick, disabled, etc.)
+        />
+      )
+    }
+  )
+
+
+// Setting the displayName for the Button component for better debugging experience in React DevTools
+Button.displayName = "Button"
+
+// Exporting the Button component and the buttonVariants function for use in other parts of the project
+export { Button, buttonVariants }
