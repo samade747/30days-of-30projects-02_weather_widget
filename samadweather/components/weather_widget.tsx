@@ -1,0 +1,73 @@
+"use client" // Enables client-side rendering for this component
+
+// Importing useState, ChangeEvent, and FormEvent from React
+import { useState, ChangeEvent, FormEvent } from "react"
+
+// Import Custom ui components for ui directory
+import{
+    Card,
+    CardHeader,
+    CardTitle,
+    CardDescription,
+    CardContnet,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
+// Imprt icons from the lucide React Libaray
+import { CloudIcon, MapPinIcon, ThermometerIcon } from "lucide-react"
+
+// Define a typescript interface for the weather data
+interface WeatherData {
+    temperature: number // temperature in celsius
+    description: string // weather description
+    location: string // location 
+    humidity: number // humidity percentage
+    unit: string // unit of measurement
+}
+
+
+// Default exprt of the weathter widget component function
+export default function WeatherWidget(){
+    // State hook for managing location input, weather data, error message, and loading state
+    const [location, setLocation] = useState<string>("") // State for location input
+    const [weather, setWeather] = useState<WeatherData | null>(null) 
+    const [error, setError] = useState<string | null>(null) // State for error message
+    const [isLoading, setIsLoading] = useState<boolean>(false) // State for loading state
+
+    // Function ti handle the serach from submision
+    const handleSearch = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault() // Prevent default form submission        
+
+        const trimmedLocation = location.trim() // Trim whitespace from location input
+            if(trimmedLocation === ""){
+                setError("Please enter a location") // set error message
+                setWeather(null)
+                return
+            }
+
+        setIsLoading(true) // Set loading state to true
+        setWeather(null) // Set weather data to null
+
+
+        try{
+            // Fetch weathter data from weather api using provided location
+            const respone = await fetch(
+                `https://api.openweathermap.org/data/2.5/weather?q=${trimmedLocation}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=metric`
+            );
+            if(!respone.ok){
+                throw new Error("City not found") // Throw error if city not found
+        }
+
+        const data = await respone.json(); // Parse the JSON response
+        const weatherData: WeatherData = {
+            temperature: data.current.temp_c,
+        }
+
+    }
+
+
+
+
+
+}
