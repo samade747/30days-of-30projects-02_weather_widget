@@ -62,12 +62,24 @@ export default function WeatherWidget(){
         const data = await respone.json(); // Parse the JSON response
         const weatherData: WeatherData = {
             temperature: data.current.temp_c,
+            description: data.current.condition.text,
+            location: data.location.name,
+            humidity: data.current.humidity,
+            unit: "C",
         }
-
+        setWeather(weatherData) // Set weather data
+    } catch (error) {
+        console.error("Error fetching weather data:", error)
+        setError("Error fetching weather data city not found")
+        setWeather(null) // clear prevoius weather data
+    } finally {
+        setIsLoading(false) // Set loading state to false
     }
+}
 
 
-
-
-
+// function to get a tem messag based on the temparecre valeue and unit
+function getTemperatureMessage(temperature: number, unit: string): string {
+    
+    
 }
