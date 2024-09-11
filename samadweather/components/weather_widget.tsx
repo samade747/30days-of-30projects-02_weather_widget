@@ -80,6 +80,22 @@ export default function WeatherWidget(){
 
 // function to get a tem messag based on the temparecre valeue and unit
 function getTemperatureMessage(temperature: number, unit: string): string {
-    
+    if(unit === "C"){
+        if(temperature < 0){
+            return `ITs freezing at ${temperature}°C ! Bundele up`;
+        } else if (temperature < 10){
+            return `its a quite cold at ${temperature} wear warm clothes`;
+        } else if(temperature < 20) {
+            return `its tem is ${temperature}°C comrt for wear noraml` ;
+        } else if(temperature < 30){
+            return `ist a best ${temperature} C enjoy a nice weather!`
+        } else {
+            return `its a hot day at ${temperature}°C stay hydrated!`
+        }
+        } else {
+            return `${temperature} ${unit}`;
+        }
+        
+    }
     
 }
