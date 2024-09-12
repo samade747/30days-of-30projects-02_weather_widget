@@ -97,5 +97,23 @@ function getTemperatureMessage(temperature: number, unit: string): string {
         }
         
     }
+
+
+    function getWeatherMessage(description: string): string {
+        s
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     
 }
+
